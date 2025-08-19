@@ -22,43 +22,38 @@ export async function POST(req: Request) {
     }
 
     // Test database connection first
-    // try {
-    //   await db.$connect()
-    //   console.log('✅ Database connected successfully')
-    // } catch (dbError) {
-    //   console.error('❌ Database connection failed:', dbError)
-    //   return new NextResponse('Database connection failed', { status: 500 })
-    // }
+    try {
+      await db.$connect()
+      console.log('✅ Database connected successfully')
+    } catch (dbError) {
+      console.error('❌ Database connection failed:', dbError)
+      return new NextResponse('Database connection failed', { status: 500 })
+    }
 
     // Upsert user in database
-    // const user = await db.user.upsert({
-    //   where: { clerkId: id },
-    //   update: {
-    //     email,
-    //     name: first_name || '',
-    //     profileImage: image_url || '',
-    //   },
-    //   create: {
-    //     clerkId: id,
-    //     email,
-    //     name: first_name || '',
-    //     profileImage: image_url || '',
-    //   },
-    // })
+    const user = await db.user.upsert({
+      where: { clerkId: id },
+      update: {
+        email,
+        name: first_name || '',
+        profileImage: image_url || '',
+      },
+      create: {
+        clerkId: id,
+        email,
+        name: first_name || '',
+        profileImage: image_url || '',
+      },
+    })
 
-    // console.log('✅ User upserted successfully:', user.id)
-    // return new NextResponse('User updated in database successfully', {
-    //   status: 200,
-    // })
-    
-    // For build-time safety, we'll just return success without database operations
-    // Database operations will be handled at runtime
-    console.log('✅ Webhook processed successfully')
-    return new NextResponse('Webhook processed successfully', {
+    console.log('✅ User upserted successfully:', user.id)
+    return new NextResponse('User updated in database successfully', {
       status: 200,
     })
   } catch (error) {
     console.error('❌ Error in webhook handler:', error)
-    return new NextResponse('Error processing webhook', { status: 500 })
+    return new NextResponse('Error updating user in database', { status: 500 })
+  } finally {
+    await db.$disconnect()
   }
 }

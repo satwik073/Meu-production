@@ -4,6 +4,7 @@ export default authMiddleware({
   publicRoutes: [
     '/',
     '/api/clerk-webhook',
+    '/api/clerk-webhook-debug',
     '/api/test-webhook',
     '/api/webhook-status',
     '/api/create-user',

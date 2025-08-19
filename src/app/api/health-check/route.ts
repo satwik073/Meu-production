@@ -7,42 +7,31 @@ export async function GET() {
     console.log('🔍 Health check started')
     
     // Test database connection
-    // const dbConnected = await testDbConnection()
+    const dbConnected = await testDbConnection()
     
     // Test user authentication
-    // const user = await currentUser()
+    const user = await currentUser()
     
     // Test database operations
-    // let userCount = 0
-    // if (dbConnected) {
-    //   userCount = await db.user.count()
-    // }
+    let userCount = 0
+    if (dbConnected) {
+      userCount = await db.user.count()
+    }
     
-    // const healthStatus = {
-    //   timestamp: new Date().toISOString(),
-    //   database: {
-    //     connected: dbConnected,
-    //     userCount: userCount
-    //   },
-    //   authentication: {
-    //     userFound: !!user,
-    //     userId: user?.id || null
-    //   },
-    //   environment: {
-    //     nodeEnv: process.env.NODE_ENV,
-    //     hasStripeSecret: !!process.env.STRIPE_SECRET,
-    //     hasDatabaseUrl: !!process.env.DATABASE_URL
-    //   }
-    // }
-    
-    // For build-time safety, return a simple health status
-    // Database and authentication checks will be handled at runtime
     const healthStatus = {
       timestamp: new Date().toISOString(),
-      status: 'healthy',
-      message: 'Health check endpoint is ready',
+      database: {
+        connected: dbConnected,
+        userCount: userCount
+      },
+      authentication: {
+        userFound: !!user,
+        userId: user?.id || null
+      },
       environment: {
-        nodeEnv: process.env.NODE_ENV || 'development'
+        nodeEnv: process.env.NODE_ENV,
+        hasStripeSecret: !!process.env.STRIPE_SECRET,
+        hasDatabaseUrl: !!process.env.DATABASE_URL
       }
     }
     

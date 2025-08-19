@@ -6,15 +6,7 @@ import MoreCredits from './more-creadits'
 type Props = {}
 
 const Workflows = async (props: Props) => {
-  // const workflows = await onGetWorkflows()
-  
-  // For build-time safety, we'll handle database operations at runtime
-  // Database operations will be handled when the page is accessed
-  console.log('✅ Workflows page ready')
-  
-  // Mock workflows data for build time
-  const workflows: any[] = []
-  
+  const workflows = await onGetWorkflows()
   return (
     <div className="relative flex flex-col gap-4">
       <section className="flex flex-col m-2">

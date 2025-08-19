@@ -140,22 +140,17 @@ export const onCreateNodeTemplate = async (
 
 export const onGetWorkflows = async () => {
   try {
-    // await ensureDbConnection()
-    // const user = await currentUser()
-    // if (user) {
-    //   const workflow = await db.workflows.findMany({
-    //     where: {
-    //       userId: user.id,
-    //     },
-    //   })
+    await ensureDbConnection()
+    const user = await currentUser()
+    if (user) {
+      const workflow = await db.workflows.findMany({
+        where: {
+          userId: user.id,
+        },
+      })
 
-    //   if (workflow) return workflow
-    // }
-    
-    // For build-time safety, return empty array
-    // Database operations will be handled at runtime
-    console.log('✅ Get workflows function ready')
-    return []
+      if (workflow) return workflow
+    }
   } catch (error) {
     console.error('❌ Error getting workflows:', error)
     return []

@@ -13,35 +13,31 @@ const Billing = async (props: Props) => {
     session_id: '',
   }
   
-  // if (session_id) {
-  //   const stripe = new Stripe(process.env.STRIPE_SECRET!, {
-  //     typescript: true,
-  //     apiVersion: '2023-10-16',
-  //   })
+  if (session_id) {
+    const stripe = new Stripe(process.env.STRIPE_SECRET!, {
+      typescript: true,
+      apiVersion: '2023-10-16',
+    })
 
-  //   const session = await stripe.checkout.sessions.listLineItems(session_id)
-  //   const user = await currentUser()
-  //   if (user) {
-  //     await db.user.update({
-  //       where: {
-  //         clerkId: user.id,
-  //       },
-  //       data: {
-  //         tier: session.data[0].description,
-  //         credits:
-  //           session.data[0].description == 'Unlimited'
-  //             ? 'Unlimited'
-  //             : session.data[0].description == 'Pro'
-  //             ? '100'
-  //             : '10',
-  //       },
-  //     })
-  //   }
-  // }
-  
-  // For build-time safety, we'll handle Stripe operations at runtime
-  // Database operations will be handled when the page is accessed
-  console.log('✅ Billing page ready')
+    const session = await stripe.checkout.sessions.listLineItems(session_id)
+    const user = await currentUser()
+    if (user) {
+      await db.user.update({
+        where: {
+          clerkId: user.id,
+        },
+        data: {
+          tier: session.data[0].description,
+          credits:
+            session.data[0].description == 'Unlimited'
+              ? 'Unlimited'
+              : session.data[0].description == 'Pro'
+              ? '100'
+              : '10',
+        },
+      })
+    }
+  }
 
   return (
     <div className="flex flex-col">

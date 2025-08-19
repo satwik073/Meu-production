@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    console.log('🔍 Webhook Test - Received body:', body)
+    console.log('🔍 Debug Webhook - Received body:', body)
     
     const { id, email_addresses, first_name, image_url } = body?.data || {}
 
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     const email = email_addresses?.[0]?.email_address
-    console.log('✅ Webhook Test - User ID:', id, 'Email:', email)
+    console.log('✅ Debug Webhook - User ID:', id, 'Email:', email)
 
     if (!email) {
       console.error('❌ No email found for user:', id)
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       status: 200,
     })
   } catch (error) {
-    console.error('❌ Error in webhook test:', error)
+    console.error('❌ Error in debug webhook:', error)
     return new NextResponse('Error updating user in database', { status: 500 })
   } finally {
     await db.$disconnect()
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 
 export async function GET() {
   return NextResponse.json({ 
-    message: 'Webhook test endpoint is working',
+    message: 'Debug webhook endpoint is working',
     timestamp: new Date().toISOString()
   })
 }

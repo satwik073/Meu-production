@@ -12,40 +12,26 @@ export const createUserInDatabase = async (userData: CreateUserData) => {
     console.log('🔍 Creating user in database:', userData)
     
     // Connect to database
-    // await ensureDbConnection()
+    await ensureDbConnection()
     
     // Create or update user
-    // const user = await db.user.upsert({
-    //   where: { clerkId: userData.clerkId },
-    //   update: {
-    //     email: userData.email,
-    //     name: userData.name || '',
-    //     profileImage: userData.profileImage || '',
-    //   },
-    //   create: {
-    //     clerkId: userData.clerkId,
-    //     email: userData.email,
-    //     name: userData.name || '',
-    //     profileImage: userData.profileImage || '',
-    //   },
-    // })
-    
-    // console.log('✅ User created/updated successfully:', user.id)
-    // return { success: true, user }
-    
-    // For build-time safety, return a mock response
-    // Database operations will be handled at runtime
-    console.log('✅ User creation endpoint ready')
-    return { 
-      success: true, 
-      user: { 
-        id: 'mock-user-id', 
+    const user = await db.user.upsert({
+      where: { clerkId: userData.clerkId },
+      update: {
+        email: userData.email,
+        name: userData.name || '',
+        profileImage: userData.profileImage || '',
+      },
+      create: {
         clerkId: userData.clerkId,
         email: userData.email,
         name: userData.name || '',
-        profileImage: userData.profileImage || ''
-      } 
-    }
+        profileImage: userData.profileImage || '',
+      },
+    })
+    
+    console.log('✅ User created/updated successfully:', user.id)
+    return { success: true, user }
     
   } catch (error) {
     console.error('❌ Error creating user:', error)
@@ -55,25 +41,11 @@ export const createUserInDatabase = async (userData: CreateUserData) => {
 
 export const getUserFromDatabase = async (clerkId: string) => {
   try {
-    // await ensureDbConnection()
-    // const user = await db.user.findUnique({
-    //   where: { clerkId }
-    // })
-    // return { success: true, user }
-    
-    // For build-time safety, return a mock response
-    // Database operations will be handled at runtime
-    console.log('✅ User retrieval endpoint ready')
-    return { 
-      success: true, 
-      user: { 
-        id: 'mock-user-id', 
-        clerkId,
-        email: 'mock@example.com',
-        name: 'Mock User',
-        profileImage: ''
-      } 
-    }
+    await ensureDbConnection()
+    const user = await db.user.findUnique({
+      where: { clerkId }
+    })
+    return { success: true, user }
   } catch (error) {
     console.error('❌ Error getting user:', error)
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
