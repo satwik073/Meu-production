@@ -33,7 +33,7 @@ const FlowInstance = ({ children, edges, nodes }: Props) => {
 
   const onPublishWorkflow = useCallback(async () => {
     const response = await onFlowPublish(pathname.split('/').pop()!, true)
-    if (response) toast.message(response)
+    if (response) toast.message(response.message)
   }, [])
 
   const onAutomateFlow = async () => {
