@@ -49,7 +49,12 @@ const Workflowform = ({ subTitle, title }: Props) => {
     const workflow = await onCreateWorkflow(values.name, values.description)
     if (workflow) {
       toast.message(workflow.message)
-      router.refresh()
+      if (workflow.workflowId) {
+        // Navigate to the editor for the newly created workflow
+        router.push(`/workflows/editor/${workflow.workflowId}`)
+      } else {
+        router.refresh()
+      }
     }
     setClose()
   }

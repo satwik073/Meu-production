@@ -143,14 +143,18 @@ export const onGetWorkflows = async () => {
     await ensureDbConnection()
     const user = await currentUser()
     if (user) {
+      console.log('🔍 Getting workflows for user:', user.id)
+      
       const workflow = await db.workflows.findMany({
         where: {
           userId: user.id,
         },
       })
 
+      console.log('🔍 Retrieved workflows:', workflow)
       if (workflow) return workflow
     }
+    return []
   } catch (error) {
     console.error('❌ Error getting workflows:', error)
     return []
@@ -163,6 +167,8 @@ export const onCreateWorkflow = async (name: string, description: string) => {
     const user = await currentUser()
 
     if (user) {
+      console.log('🔍 Creating workflow for user:', user.id)
+      
       //create new workflow
       const workflow = await db.workflows.create({
         data: {
@@ -172,9 +178,11 @@ export const onCreateWorkflow = async (name: string, description: string) => {
         },
       })
 
-      if (workflow) return { message: 'workflow created' }
+      console.log('✅ Workflow created successfully:', workflow)
+      if (workflow) return { message: 'workflow created', workflowId: workflow.id }
       return { message: 'Oops! try again' }
     }
+    return { message: 'User not found' }
   } catch (error) {
     console.error('❌ Error creating workflow:', error)
     return { message: 'Error creating workflow' }
@@ -193,9 +201,13 @@ export const onGetNodesEdges = async (flowId: string) => {
         edges: true,
       },
     })
-    if (nodesEdges?.nodes && nodesEdges?.edges) return nodesEdges
+    
+    console.log('🔍 Retrieved workflow data:', { flowId, nodesEdges })
+    
+    // Return the data even if nodes or edges are null/empty
+    return nodesEdges || { nodes: null, edges: null }
   } catch (error) {
     console.error('❌ Error getting nodes and edges:', error)
-    return null
+    return { nodes: null, edges: null }
   }
 }

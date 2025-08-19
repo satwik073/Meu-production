@@ -51,3 +51,17 @@ export const getUserFromDatabase = async (clerkId: string) => {
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
+
+export const getWorkflowFromDatabase = async (workflowId: string) => {
+  try {
+    await ensureDbConnection()
+    const workflow = await db.workflows.findUnique({
+      where: { id: workflowId }
+    })
+    console.log('🔍 Retrieved workflow:', workflow)
+    return { success: true, workflow }
+  } catch (error) {
+    console.error('❌ Error getting workflow:', error)
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+  }
+}

@@ -167,9 +167,30 @@ const EditorCanvas = (props: Props) => {
     setIsWorkFlowLoading(true)
     const response = await onGetNodesEdges(pathname.split('/').pop()!)
     if (response) {
-      setEdges(JSON.parse(response.edges!))
-      setNodes(JSON.parse(response.nodes!))
-      setIsWorkFlowLoading(false)
+      console.log('🔍 Loading workflow data:', response)
+      
+      // Handle null/empty edges and nodes
+      if (response.edges) {
+        try {
+          setEdges(JSON.parse(response.edges))
+        } catch (error) {
+          console.error('❌ Error parsing edges:', error)
+          setEdges([])
+        }
+      } else {
+        setEdges([])
+      }
+      
+      if (response.nodes) {
+        try {
+          setNodes(JSON.parse(response.nodes))
+        } catch (error) {
+          console.error('❌ Error parsing nodes:', error)
+          setNodes([])
+        }
+      } else {
+        setNodes([])
+      }
     }
     setIsWorkFlowLoading(false)
   }
