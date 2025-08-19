@@ -21,6 +21,36 @@ export async function POST(req: Request) {
       return new NextResponse('No email found', { status: 400 })
     }
 
+    // Test database connection first
+    // try {
+    //   await db.$connect()
+    //   console.log('✅ Database connected successfully')
+    // } catch (dbError) {
+    //   console.error('❌ Database connection failed:', dbError)
+    //   return new NextResponse('Database connection failed', { status: 500 })
+    // }
+
+    // Upsert user in database
+    // const user = await db.user.upsert({
+    //   where: { clerkId: id },
+    //   update: {
+    //     email,
+    //     name: first_name || '',
+    //     profileImage: image_url || '',
+    //   },
+    //   create: {
+    //     clerkId: id,
+    //     email,
+    //     name: first_name || '',
+    //     profileImage: image_url || '',
+    //   },
+    // })
+
+    // console.log('✅ User upserted successfully:', user.id)
+    // return new NextResponse('User updated in database successfully', {
+    //   status: 200,
+    // })
+    
     // For build-time safety, we'll just return success without database operations
     // Database operations will be handled at runtime
     console.log('✅ Webhook processed successfully')
